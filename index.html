@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zuccä Caffè | Cafés especiais e sabores afetivos</title>
+  <meta name="description" content="Cafeteria aconchegante no Assunção, em São Bernardo do Campo.">
+  <meta name="theme-color" content="#0c2d42">
+  <meta property="og:title" content="Zuccä Caffè | Cafés especiais e sabores afetivos">
+  <meta property="og:description" content="Uma pausa gostosa no coração do Assunção.">
+  <meta property="og:image" content="assets/hero-hd.png">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Manrope:wght@400;500;600;700&display=swap');
+
+    :root {
+      --navy: #0c2d42;
+      --cream: #f5efe3;
+      --paper: #fffdf8;
+      --rust: #bd6249;
+      --rust-hover: #a35038;
+      --ink: #173141;
+      --muted: #66747b;
+      --line: #dcd5c8;
+      --shadow-sm: 0 4px 12px rgba(12, 45, 66, 0.05);
+      --shadow-md: 0 12px 30px rgba(12, 45, 66, 0.08);
+      --shadow-lg: 0 20px 40px rgba(12, 45, 66, 0.12);
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Manrope', Arial, sans-serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+    .skip-link{position:fixed;left:1rem;top:-5rem;background:#fff;color:var(--navy);padding:.8rem 1rem;z-index:2000;border-radius:4px;box-shadow:var(--shadow-md)}
+    .skip-link:focus{top:1rem}
+
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--rust); outline-offset: 4px; }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+    h2 {
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .progress-track {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      z-index: 1100;
+      background: transparent;
+      pointer-events: none;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--rust);
+      transform-origin: left;
+      transition: width 0.08s linear;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes softPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.45); }
+      50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+    .nav {
+      height: 82px;
+      padding: 0 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 253, 248, 0.92);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(220, 213, 200, 0.4);
+      transition: var(--transition);
+    }
+
+    .nav.scrolled {
+      height: 66px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.65rem;
+      letter-spacing: 0.12em;
+      color: var(--navy);
+      transition: var(--transition);
+    }
+    .logo:hover { opacity: 0.85; }
+    .logo small {
+      display: block;
+      text-align: center;
+      font: 600 0.48rem 'Manrope', sans-serif;
+      letter-spacing: 0.5em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 0.4rem 0;
+      transition: var(--transition), color 0.3s var(--ease);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--rust);
+      transition: var(--transition);
+    }
+    .nav-links a:hover::after,
+    .nav-links a[aria-current="true"]::after { width: 100%; }
+    .nav-links a[aria-current="true"] { color: var(--rust); }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--navy);
+      cursor: pointer;
+      padding: 0.5rem;
+      position: relative;
+      width: 44px;
+      height: 44px;
+    }
+    .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after {
+      content: '';
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      background: var(--navy);
+      transition: transform 0.35s var(--ease), opacity 0.25s var(--ease), top 0.25s var(--ease);
+    }
+    .menu-toggle span { top: 21px; }
+    .menu-toggle span::before { top: -8px; }
+    .menu-toggle span::after { top: 8px; }
+    .menu-toggle.open span { background: transparent; }
+    .menu-toggle.open span::before { top: 0; transform: rotate(45deg); }
+    .menu-toggle.open span::after { top: 0; transform: rotate(-45deg); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      background: var(--rust);
+      color: #fff;
+      padding: 0.95rem 1.6rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      border-radius: 4px;
+      letter-spacing: 0.03em;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.35s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+      cursor: pointer;
+      will-change: transform;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn span.label { position: relative; z-index: 1; }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.25), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+    }
+    .btn:hover::before { opacity: 1; }
+    .btn:hover { background: var(--rust-hover); box-shadow: var(--shadow-md); }
+    .btn:active { transform: scale(0.97) !important; }
+    .btn.light { background: var(--cream); color: var(--navy); }
+    .btn.light:hover { background: #eae2d3; color: var(--navy); }
+
+    .kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      color: var(--rust);
+      margin-bottom: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      min-height: calc(100vh - 82px);
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      background: url('assets/hero-hd.png') center/cover no-repeat;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(480px circle at var(--gx, 50%) var(--gy, 30%), rgba(229, 160, 141, 0.16), transparent 60%);
+      transition: opacity 0.4s var(--ease);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(7, 29, 43, 0.92), rgba(7, 29, 43, 0.6) 55%, transparent),
+                  linear-gradient(0deg, rgba(7, 29, 43, 0.5), transparent);
+    }
+
+    .hero-copy {
+      position: relative;
+      color: #fff;
+      padding: 8vw 7vw;
+      max-width: 880px;
+      z-index: 2;
+    }
+
+    .hero-copy .kicker {
+      color: #e5a08d;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeInUp 0.7s var(--ease) 0.15s forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(3.5rem, 7.5vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .hero h1 .line {
+      display: block;
+      overflow: hidden;
+    }
+    .hero h1 .line span {
+      display: block;
+      transform: translateY(105%);
+      animation: lineUp 0.85s var(--ease) forwards;
+    }
+    .hero h1 .line:nth-child(1) span { animation-delay: 0.3s; }
+    .hero h1 .line:nth-child(2) span { animation-delay: 0.42s; }
+    @keyframes lineUp { to { transform: translateY(0); } }
+
+    .hero p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      max-width: 600px;
+      color: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeInUp 0.7s var(--ease) 0.62s forwards;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      margin-top: 2.2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeInUp 0.7s var(--ease) 0.78s forwards;
+    }
+
+    .link {
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      padding-bottom: 2px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+    .link:hover { border-color: #fff; color: var(--cream); }
+
+    .rating {
+      position: absolute;
+      right: 5vw;
+      bottom: 4vw;
+      background: rgba(245, 239, 227, 0.95);
+      backdrop-filter: blur(8px);
+      padding: 1.2rem 1.6rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      color: var(--navy);
+      border-radius: 6px;
+      box-shadow: var(--shadow-lg);
+      z-index: 2;
+      transition: var(--transition);
+      opacity: 0;
+      animation: fadeInUp 0.7s var(--ease) 0.95s forwards;
+    }
+    .rating:hover { transform: translateY(-4px); }
+    .rating strong { font: 600 3.2rem/1 'Cormorant Garamond', Georgia, serif; }
+    .stars { color: #d4854e; letter-spacing: 0.12em; }
+
+    .intro {
+      padding: 9rem 7vw 4rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 6vw;
+      align-items: end;
+    }
+    .intro > p { color: var(--muted); line-height: 1.85; font-size: 1.15rem; }
+    .quick-facts{display:grid;grid-template-columns:repeat(4,1fr);background:var(--cream);border-bottom:1px solid var(--line)}
+    .quick-facts div{padding:1.25rem 1rem;text-align:center;border-right:1px solid var(--line);font-size:.76rem;font-weight:700;letter-spacing:.05em;color:var(--navy)}
+    .quick-facts div:last-child{border-right:0}.quick-facts span{color:var(--rust);margin-right:.35rem}
+
+    .cards {
+      padding: 2rem 7vw 8rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .cards article {
+      background: var(--paper);
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.4s var(--ease), border-color 0.3s var(--ease), box-shadow 0.4s var(--ease);
+      will-change: transform;
+    }
+    .cards article:hover {
+      transform: translateY(-6px);
+      border-color: rgba(189, 98, 73, 0.3);
+      box-shadow: var(--shadow-md);
+    }
+
+    .icon {
+      color: var(--rust);
+      font-size: 1.8rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      transition: transform 0.45s var(--ease);
+    }
+    .cards article:hover .icon { transform: rotate(-8deg) scale(1.1); }
+
+    .cards h3, .taste h3 { font-size: 1.6rem; margin: 0.8rem 0; }
+    .cards p, .taste p { color: var(--muted); line-height: 1.7; font-size: 0.92rem; }
+
+    .menu {
+      background: var(--navy);
+      color: #fff;
+      padding: 8rem 7vw;
+      text-align: center;
+    }
+    .menu .kicker { color: #e5a08d; }
+    .menu > p { color: #bfcad0; font-size: 1.1rem; }
+
+    .tastes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 4.5rem 0;
+      text-align: left;
+    }
+
+    .taste {
+      background: var(--cream);
+      color: var(--navy);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+      transform-style: preserve-3d;
+      perspective: 900px;
+      will-change: transform;
+    }
+    .taste:hover { box-shadow: var(--shadow-lg); }
+
+    .taste-img-wrapper { overflow: hidden; height: 260px; position: relative; }
+    .taste img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s var(--ease);
+    }
+    .taste:hover img { transform: scale(1.08); }
+    .taste-img-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255,255,255,0.18), transparent 40%);
+      transform: translateX(-120%);
+      transition: transform 0.7s var(--ease);
+    }
+    .taste:hover .taste-img-wrapper::after { transform: translateX(120%); }
+
+    .taste div.taste-copy { padding: 2rem; }
+
+    .story {
+      padding: 9rem 7vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6vw;
+      align-items: center;
+    }
+    .story-img-wrapper { border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-md); }
+    .story img { width: 100%; height: 580px; object-fit: cover; display: block; transition: transform 0.6s var(--ease); }
+
+    .story blockquote {
+      margin: 0;
+      font: italic 600 clamp(2.4rem, 3.5vw, 3.8rem)/1.15 'Cormorant Garamond', Georgia, serif;
+      color: var(--navy);
+      position: relative;
+    }
+    .story blockquote::before {
+      content: '“';
+      position: absolute;
+      left: -0.6ch;
+      top: -0.3em;
+      color: var(--rust);
+      opacity: 0.25;
+      font-size: 1.6em;
+    }
+    .story cite {
+      display: block;
+      font: 700 0.75rem 'Manrope', sans-serif;
+      letter-spacing: 0.15em;
+      color: var(--rust);
+      margin-top: 2rem;
+    }
+
+    .proof {
+      background: var(--cream);
+      padding: 6rem 7vw;
+      text-align: center;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .score {
+      font: 600 6.5rem/1 'Cormorant Garamond', Georgia, serif;
+      display: block;
+      color: var(--navy);
+    }
+    .proof p { color: var(--muted); font-weight: 600; margin-top: 0.5rem; }
+    .instagram-section{padding:7rem 7vw;display:grid;grid-template-columns:.75fr 1.25fr;gap:5vw;align-items:center;background:var(--paper)}
+    .instagram-card{background:var(--navy);color:#fff;border-radius:10px;padding:3rem;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+    .instagram-card::after{content:'@';position:absolute;right:-.05em;bottom:-.35em;font:700 12rem 'Cormorant Garamond';color:#ffffff0b;pointer-events:none}
+    .instagram-card p{color:#cbd5da;line-height:1.75}.instagram-card .handle{font:600 2.1rem 'Cormorant Garamond';margin-bottom:1rem;display:block}.instagram-card .btn{margin-top:1rem}
+    .contact-list{display:grid;gap:1rem}.contact-chip{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.4rem;border:1px solid var(--line);border-radius:6px;background:#fff;transition:var(--transition)}
+    .contact-chip:hover{transform:translateX(6px);border-color:#bd624966;box-shadow:var(--shadow-sm)}
+
+    .visit {
+      padding: 9rem 7vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6vw;
+      align-items: center;
+    }
+
+    .info {
+      border-top: 1px solid var(--line);
+      padding: 1.4rem 0;
+      transition: padding-left 0.35s var(--ease), border-color 0.35s var(--ease);
+    }
+    .info:hover { padding-left: 0.5rem; border-color: rgba(189, 98, 73, 0.4); }
+    .info strong { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rust); }
+    .info p { margin: 0.5rem 0 0; color: var(--muted); line-height: 1.7; }
+
+    .map {
+      height: 500px;
+      background: #e7e1d4;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
+    }
+    .map:hover { box-shadow: var(--shadow-lg); }
+    .map::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: repeating-linear-gradient(24deg, transparent 0 42px, #d2c8b7 43px 47px),
+                  repeating-linear-gradient(116deg, transparent 0 75px, #f7f3ea 76px 90px);
+      transform: rotate(-5deg);
+      transition: var(--transition);
+    }
+    .map:hover::before { transform: rotate(-3deg) scale(1.02); }
+    .map span {
+      z-index: 1;
+      text-align: center;
+      font: 600 2.2rem 'Cormorant Garamond', Georgia, serif;
+      color: var(--navy);
+      background: rgba(255, 253, 248, 0.9);
+      padding: 2rem 3rem;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.4s var(--ease);
+    }
+    .map:hover span { transform: translateY(-4px); }
+
+    .faq {
+      padding: 8rem 7vw;
+      background: #f8f5ee;
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 6vw;
+    }
+
+    .faq-item {
+      border-top: 1px solid var(--line);
+      padding: 1.4rem 0;
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--line); }
+
+    .faq-q {
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--navy);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 0;
+      font-family: inherit;
+    }
+    .faq-q .plus {
+      font-size: 1.4rem;
+      color: var(--rust);
+      font-weight: 400;
+      transition: transform 0.4s var(--ease);
+      flex-shrink: 0;
+      margin-left: 1rem;
+    }
+    .faq-item.open .faq-q .plus { transform: rotate(45deg); }
+
+    .faq-a-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s var(--ease);
+    }
+    .faq-item.open .faq-a-wrap { grid-template-rows: 1fr; }
+    .faq-a-inner { overflow: hidden; }
+    .faq-a-inner p {
+      color: var(--muted);
+      line-height: 1.75;
+      margin: 1rem 0 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.35s var(--ease) 0.05s, transform 0.35s var(--ease) 0.05s;
+    }
+    .faq-item.open .faq-a-inner p { opacity: 1; transform: translateY(0); }
+
+    .cta {
+      padding: 8rem 7vw;
+      background: var(--rust);
+      color: #fff;
+      text-align: center;
+    }
+    .cta .kicker { color: var(--cream); }
+    .cta p {
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .footer {
+      padding: 4rem 7vw;
+      background: #071d2b;
+      color: #aebbc2;
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+    }
+
+    .whatsapp {
+      position: fixed;
+      right: 1.8rem;
+      bottom: 1.8rem;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #25d366;
+      color: #fff;
+      font-size: 1.6rem;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+      z-index: 999;
+      transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      animation: softPulse 2.6s ease-out infinite;
+    }
+    .whatsapp:hover {
+      transform: scale(1.1) translateY(-3px);
+      box-shadow: 0 14px 30px rgba(37, 211, 102, 0.45);
+      animation-play-state: paused;
+    }
+    .whatsapp .tip {
+      position: absolute;
+      right: 68px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-radius: 5px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+      pointer-events: none;
+    }
+    .whatsapp:hover .tip { opacity: 1; transform: translateX(0); }
+
+    @media(max-width: 900px) {
+      .menu-toggle { display: block; }
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--paper);
+        flex-direction: column;
+        padding: 2rem 7vw;
+        gap: 1.5rem;
+        border-bottom: 1px solid var(--line);
+        box-shadow: var(--shadow-md);
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-8px);
+        transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), visibility 0.3s;
+      }
+      .nav-links.active { visibility: visible; opacity: 1; transform: translateY(0); }
+      .nav-links a { opacity: 0; transform: translateY(6px); transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); }
+      .nav-links.active a { opacity: 1; transform: translateY(0); }
+      .nav-links.active a:nth-child(1) { transition-delay: 0.05s; }
+      .nav-links.active a:nth-child(2) { transition-delay: 0.1s; }
+      .nav-links.active a:nth-child(3) { transition-delay: 0.15s; }
+
+      .rating { left: 7vw; right: auto; }
+      .intro, .story, .visit, .faq { grid-template-columns: 1fr; }
+      .quick-facts{grid-template-columns:1fr 1fr}.instagram-section{grid-template-columns:1fr}
+      .story img { height: 420px; }
+    }
+
+    @media(max-width: 560px) {
+      .nav { padding: 0 1.5rem; }
+      .nav .btn { display: none; }
+      .hero::before { background: linear-gradient(0deg, rgba(7, 29, 43, 0.95), rgba(7, 29, 43, 0.4)); }
+      .hero-copy { padding: 4rem 1.5rem 10rem; }
+      .hero h1 { font-size: 3.5rem; }
+      .rating { left: 1.5rem; bottom: 2rem; }
+      .intro, .menu, .story, .proof, .visit, .faq, .cta { padding: 5rem 1.5rem; }
+      .cards { padding: 0 1.5rem 5rem; }
+      .footer { padding: 3rem 1.5rem; }
+      .quick-facts{grid-template-columns:1fr 1fr}.quick-facts div{padding:1rem .5rem}.instagram-section{padding:5rem 1.5rem}.instagram-card{padding:2rem}
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      .hero h1 .line span { transform: translateY(0); }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+
+  <header class="nav" id="siteNav">
+    <a class="logo" href="#inicio">ZUCCÄ<small>CAFFÈ</small></a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#experiencia" data-section="experiencia">Experiência</a>
+      <a href="#sabores" data-section="sabores">Sabores</a>
+      <a href="#visite" data-section="visite">Visite</a>
+      <a href="https://www.instagram.com/zuccacaffe/" target="_blank" rel="noopener">Instagram ↗</a>
+    </nav>
+
+    <a class="btn" target="_blank" href="https://wa.me/5511937024130"><span class="label">Falar no WhatsApp</span></a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir Menu" aria-expanded="false"><span></span></button>
+  </header>
+
+  <main id="conteudo"><section class="hero" id="inicio">
+    <div class="hero-glow" id="heroGlow"></div>
+    <div class="hero-copy">
+      <div class="kicker">✦ CAFÉS ESPECIAIS · SÃO BERNARDO DO CAMPO</div>
+      <h1>
+        <span class="line"><span>O melhor sabor é o que</span></span>
+        <span class="line"><span>fica na memória.</span></span>
+      </h1>
+      <p>Uma cafeteria aconchegante no coração do Assunção, feita para encontros, pausas gostosas e sabores cheios de afeto.</p>
+      <div class="actions">
+        <a class="btn" target="_blank" href="https://wa.me/5511937024130"><span class="label">Quero conhecer →</span></a>
+        <a class="link" target="_blank" href="https://maps.app.goo.gl/gyx4n9xsoQ9Ziu476">⌖ Como chegar</a>
+      </div>
+    </div>
+    <div class="rating">
+      <strong data-count-to="4.7" data-decimals="1">0,0</strong>
+      <div>
+        <div class="stars">★★★★★</div>
+        <small>Avaliação no Google</small>
+      </div>
+    </div>
+  </section>
+  <section class="quick-facts" aria-label="Diferenciais em resumo">
+    <div><span>★</span> Nota 4,7 no Google</div><div><span>☕</span> Cafés especiais</div><div><span>♿</span> Entrada acessível</div><div><span>🐾</span> Clima pet friendly</div>
+  </section>
+
+  <section class="intro reveal" id="experiencia">
+    <div>
+      <div class="kicker">POR QUE VISITAR</div>
+      <h2>Seu novo cantinho favorito no bairro.</h2>
+    </div>
+    <p>A Zuccä reúne café bem preparado, comida que abraça e um ambiente solar para você viver o momento — sem pressa.</p>
+  </section>
+
+  <section class="cards">
+    <article class="reveal">
+      <span class="icon">☕</span>
+      <h3>Café com cuidado</h3>
+      <p>Cafés especiais preparados para fazer da sua pausa um pequeno ritual.</p>
+    </article>
+    <article class="reveal">
+      <span class="icon">♡</span>
+      <h3>Sabores afetivos</h3>
+      <p>Brunch, doces e receitas pensadas para despertar boas lembranças.</p>
+    </article>
+    <article class="reveal">
+      <span class="icon">☀</span>
+      <h3>Ambiente acolhedor</h3>
+      <p>Espaço charmoso, área externa e clima perfeito para conversar ou relaxar.</p>
+    </article>
+    <article class="reveal">
+      <span class="icon">🐾</span>
+      <h3>Boa companhia</h3>
+      <p>Área externa acolhedora e um clima especial para aproveitar ao lado do seu pet.</p>
+    </article>
+  </section>
+
+  <section class="menu" id="sabores">
+    <div class="kicker">UM CONVITE A DESACELERAR</div>
+    <h2>Sabores para todos os momentos</h2>
+    <p>Do primeiro café do dia ao encontro da tarde.</p>
+
+    <div class="tastes">
+      <article class="taste reveal">
+        <div class="taste-img-wrapper">
+          <img src="assets/brunch-hd.png" alt="Brunch com café, frutas, ovos e pães na Zuccä" loading="lazy">
+        </div>
+        <div class="taste-copy">
+          <h3>Brunch & café</h3>
+          <p>Uma mesa completa para começar o dia com calma, sabor e boas conversas.</p>
+        </div>
+      </article>
+      <article class="taste reveal">
+        <div class="taste-img-wrapper">
+          <img src="assets/lanche-hd.png" alt="Sanduíche artesanal acompanhado de bebida gelada" loading="lazy">
+        </div>
+        <div class="taste-copy">
+          <h3>Lanches artesanais</h3>
+          <p>Combinações caprichadas e bebidas refrescantes para qualquer hora do dia.</p>
+        </div>
+      </article>
+      <article class="taste reveal">
+        <div class="taste-img-wrapper">
+          <img src="assets/petfriendly-hd.png" alt="Gato em carrinho na área externa da Zuccä" loading="lazy">
+        </div>
+        <div class="taste-copy">
+          <h3>Pausa com seu pet</h3>
+          <p>Um ambiente externo gostoso para criar memórias na melhor companhia.</p>
+        </div>
+      </article>
+    </div>
+
+    <a class="btn light" target="_blank" href="https://wa.me/5511937024130"><span class="label">Consultar opções de hoje →</span></a>
+  </section>
+
+  <section class="story reveal">
+    <div class="story-img-wrapper">
+      <img src="assets/ambiente-hd.png" alt="Salão interno acolhedor da Zuccä Caffè" loading="lazy">
+    </div>
+    <div>
+      <blockquote>Café bom é aquele que chega quentinho, acompanha uma boa conversa e deixa vontade de voltar.</blockquote>
+      <cite>— A ESSÊNCIA ZUCCÄ</cite>
+    </div>
+  </section>
+
+  <section class="proof reveal">
+    <span class="score" data-count-to="4.7" data-decimals="1">0,0</span>
+    <div class="stars">★★★★★</div>
+    <p>Nota pública no Google Maps</p>
+  </section>
+  <section class="instagram-section reveal" id="contato">
+    <div><div class="kicker">ACOMPANHE A ZUCCÄ</div><h2>Novidades fresquinhas no seu feed.</h2><p style="color:var(--muted);line-height:1.8">Veja sabores do dia, bastidores e novidades da cafeteria. Para dúvidas rápidas, fale diretamente com a equipe.</p></div>
+    <div><div class="instagram-card"><span class="handle">@zuccacaffe</span><p>Cafeteria aconchegante, cafés especiais e sabores afetivos em São Bernardo do Campo.</p><a class="btn light" href="https://www.instagram.com/zuccacaffe/" target="_blank" rel="noopener"><span class="label">Seguir no Instagram ↗</span></a></div><div class="contact-list" style="margin-top:1rem"><a class="contact-chip" href="https://wa.me/5511937024130" target="_blank" rel="noopener"><span>WhatsApp</span><strong>Conversar →</strong></a><a class="contact-chip" href="tel:+551143511171"><span>Telefone</span><strong>(11) 4351-1171</strong></a></div></div>
+  </section>
+
+  <section class="visit reveal" id="visite">
+    <div>
+      <div class="kicker">VENHA VIVER ESSA PAUSA</div>
+      <h2>A mesa está posta.</h2>
+
+      <div class="info">
+        <strong>Endereço</strong>
+        <p>Av. João Firmino, 1161<br>Assunção · São Bernardo do Campo — SP<br>CEP 09810-260</p>
+      </div>
+      <div class="info">
+        <strong>Horário exibido</strong>
+        <p>Terça-feira · 10h às 19h<br><small>Consulte a equipe para os demais dias.</small></p>
+      </div>
+      <div class="info">
+        <strong>Contato</strong>
+        <p><a href="tel:+551143511171">(11) 4351-1171</a></p>
+      </div>
+
+      <div class="actions" style="margin-top: 1.6rem;">
+        <a class="btn" target="_blank" href="https://maps.app.goo.gl/gyx4n9xsoQ9Ziu476"><span class="label">Abrir no Maps</span></a>
+      </div>
+    </div>
+
+    <a class="map" target="_blank" href="https://maps.app.goo.gl/gyx4n9xsoQ9Ziu476">
+      <span>⌖<br>Zuccä Caffè<br><small>Assunção · SBC</small></span>
+    </a>
+  </section>
+
+  <section class="faq reveal">
+    <div>
+      <div class="kicker">PERGUNTAS FREQUENTES</div>
+      <h2>Antes de vir</h2>
+    </div>
+    <div id="faqList">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Onde fica a Zuccä Caffè?</span><span class="plus">+</span>
+        </button>
+        <div class="faq-a-wrap"><div class="faq-a-inner">
+          <p>Na Av. João Firmino, 1161, bairro Assunção, em São Bernardo do Campo — SP.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>A cafeteria oferece brunch?</span><span class="plus">+</span>
+        </button>
+        <div class="faq-a-wrap"><div class="faq-a-inner">
+          <p>Sim. O perfil público destaca opções de brunch, cafés especiais e sabores afetivos.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>O espaço é acessível?</span><span class="plus">+</span>
+        </button>
+        <div class="faq-a-wrap"><div class="faq-a-inner">
+          <p>Sim. O Google Maps informa entrada acessível para pessoas em cadeira de rodas.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Como confirmar o horário de hoje?</span><span class="plus">+</span>
+        </button>
+        <div class="faq-a-wrap"><div class="faq-a-inner">
+          <p>Fale com a equipe pelo WhatsApp antes de sair para confirmar o atendimento do dia.</p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="kicker">SUA PRÓXIMA PAUSA COMEÇA AQUI</div>
+    <h2>Vamos tomar um café?</h2>
+    <p>Chame a Zuccä, confirme as opções do dia e venha criar uma boa memória.</p>
+    <a class="btn light" target="_blank" href="https://wa.me/5511937024130"><span class="label">Conversar no WhatsApp →</span></a>
+  </section>
+  </main>
+
+  <footer class="footer">
+    <span>ZUCCÄ CAFFÈ · Cafés especiais e sabores afetivos.</span>
+    <span>Av. João Firmino, 1161 · Assunção · SBC</span>
+    <span>© 2026 · Informações sujeitas a atualização.</span>
+    <span><a href="https://www.instagram.com/zuccacaffe/" target="_blank" rel="noopener">Instagram</a> · <a href="https://wa.me/5511937024130" target="_blank" rel="noopener">WhatsApp</a> · <a href="https://maps.app.goo.gl/gyx4n9xsoQ9Ziu476" target="_blank" rel="noopener">Como chegar</a></span>
+  </footer>
+
+  <a class="whatsapp" target="_blank" aria-label="WhatsApp" href="https://wa.me/5511937024130">
+    <span class="tip">Fale conosco</span>☎
+  </a>
+
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- Menu Mobile ---------- */
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('open', isOpen);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuToggle.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ---------- Nav: Scroll, Progress & Active State ---------- */
+    const nav = document.getElementById('siteNav');
+    const progressBar = document.getElementById('progressBar');
+    const sections = ['experiencia', 'sabores', 'visite'].map(id => document.getElementById(id));
+    const navAnchors = document.querySelectorAll('.nav-links a');
+
+    function onScroll() {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 40);
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (y / docHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+
+      let current = null;
+      sections.forEach(sec => {
+        if (!sec) return;
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 140 && rect.bottom >= 140) current = sec.id;
+      });
+      navAnchors.forEach(a => {
+        a.removeAttribute('aria-current');
+        if (a.dataset.section === current) a.setAttribute('aria-current', 'true');
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ---------- Ancoragem Suave ---------- */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const target = document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        const offset = nav.getBoundingClientRect().height + 12;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: reduceMotion ? 'auto' : 'smooth' });
+      });
+    });
+
+    /* ---------- Interactive Glow Effects ---------- */
+    const hero = document.querySelector('.hero');
+    const heroGlow = document.getElementById('heroGlow');
+    if (hero && heroGlow && !reduceMotion && window.matchMedia('(hover: hover)').matches) {
+      hero.addEventListener('mousemove', e => {
+        const rect = hero.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        heroGlow.style.setProperty('--gx', `${x}%`);
+        heroGlow.style.setProperty('--gy', `${y}%`);
+      });
+    }
+
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        btn.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        btn.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    /* ---------- Tilt 3D em Cards e Elementos ---------- */
+    if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('.taste, .cards article').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          card.style.transform = `perspective(1000px) rotateX(${-y / 20}deg) rotateY(${x / 20}deg) translateZ(8px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+      });
+    }
+
+    /* ---------- Scroll Reveal (IntersectionObserver) ---------- */
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ---------- FAQ Accordion ---------- */
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ---------- Animated Counters ---------- */
+    const countObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.countTo);
+          const decimals = parseInt(el.dataset.decimals || '0', 10);
+          const duration = 1800;
+          const startTime = performance.now();
+
+          function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
+            const currentVal = easeProgress * target;
+
+            el.textContent = currentVal.toFixed(decimals).replace('.', ',');
+
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            } else {
+              el.textContent = target.toFixed(decimals).replace('.', ',');
+            }
+          }
+
+          requestAnimationFrame(update);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-count-to]').forEach(el => countObserver.observe(el));
+  </script>
+</body>
+</html>
